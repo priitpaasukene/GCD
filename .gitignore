@@ -1,3 +1,4 @@
 .aws/config
 .chef/secret-file
 config.sh
+*/Berksfile.lock
