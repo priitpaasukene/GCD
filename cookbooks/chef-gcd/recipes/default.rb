@@ -6,3 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
+
+# If deployment_group is 'gcd-server' run chef-server cookbook
+
+recipe 'chef-server'

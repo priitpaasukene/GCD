@@ -33,6 +33,11 @@ cd to cookbooks/chef-server-cluster
 berks install
 berks upload
 
+sudo apt-get install bundler
+
+
+on machine: sudo chef-client -c knife.rb -o chef-server
+
 ## DOCS I have read
 
 https://docs.chef.io/server_high_availability.html

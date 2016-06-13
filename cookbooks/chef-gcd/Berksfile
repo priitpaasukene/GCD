@@ -1,0 +1,9 @@
+
+source "https://supermarket.chef.io"
+
+metadata
+
+cookbook "chef-server"
+cookbook "aws"
+cookbook "aws_security"
+cookbook 'route53', '~> 0.4.4'

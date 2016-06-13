@@ -1,11 +1,11 @@
-chef-server CHANGELOG
+chef-gcd CHANGELOG
 =====================
 
 This file is used to list changes made in each version of the chef-server cookbook.
 
 0.1.0
 -----
-- [your_name] - Initial release of chef-server
+- [Priit Pääsukene] - Initial release of chef-server
 
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.

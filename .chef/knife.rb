@@ -8,3 +8,5 @@ private_keys     'hc-metal-provisioner' => '/tmp/ssh/id_rsa'
 public_keys      'hc-metal-provisioner' => '/tmp/ssh/id_rsa.pub'
 
 secret_file      '/home/priitp/.chef/secret.pem'
+
+
