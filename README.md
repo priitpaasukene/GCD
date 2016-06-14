@@ -11,6 +11,7 @@ Add AdministratorAccess privilege to group "admin"
 Create user and record access key
 Add created user to "admin" group
 
+create ~/.aws/config file based on .aws/sample_config file Include your key and secret there.
 
 ## VM / laptop tasks to set up chef
 sudo apt-get install ruby ruby-dev chef
