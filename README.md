@@ -24,19 +24,18 @@ ssh-keygen -f /tmp/ssh/id_rsa
 
 create /etc/chef/client.pem for chef to be happy.
 
-wget  https://packages.chef.io/stable/debian/8/chefdk_0.14.25-1_amd64.deb
+wget  https://packages.chef.io/stable/debian/8/chefdk_0.14.25-1_amd64.deb;
 sha1sum chefdk_0.14.25-1_amd64.deb |grep 7130b9f4405c622f0ccb5eb832f8ae1ba572a260
 
-dpkg -i chefdk_0.14.25-1_amd64.deb
+sudo dpkg -i chefdk_0.14.25-1_amd64.deb
 
-cd to cookbooks/chef-server-cluster
+cd to cookbooks/chef-gcd
 berks install
 berks upload
 
 sudo apt-get install bundler
 
-
-on machine: sudo chef-client -c knife.rb -o chef-server
+Run Setup_env.sh
 
 ## DOCS I have read
 
