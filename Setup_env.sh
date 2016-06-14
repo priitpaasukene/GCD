@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "unsafe to use and incomplete code"
+exit 1
+
 # Script that sets up the aws env for chef cluster
 # Prerequisite - aws cli is set up with correct keys.
 
@@ -24,7 +27,7 @@ fi
 
 #1. create subnet for chef
 
-aws ec2 create-subnet --vpc-id "$VPC_ID" --cidr-block "$CHEF_SUBNET" >> $TMPDIR/subnet.txt
+aws ec2 create-subnet --vpc-id "$VPC_ID" --availability-zone "$AWS_AZ" --cidr-block "$CHEF_SUBNET" >> $TMPDIR/subnet.txt
 
 SUBNET_ID=$(grep -P '"SubnetId":.*?[^\\]",' $TMPDIR/subnet.txt | cut -d "\"" -f 4 )
 
@@ -52,9 +55,29 @@ aws ec2 import-key-pair --key-name "setup_key" --public-key-material "$(cat $MY_
 
 aws ec2 run-instances --image-id "$CHEFSERVER_IMAGE_ID" --instance-type t1.micro --key "setup_key" --security-group-ids "$SECGROUP_ID" --count 2 --associate-public-ip-address > $TMPDIR/instances.txt
 
+INSTANCE_IDS=$(grep -P '"InstanceId":.*?[^\\]"' $TMPDIR/instances.txt | cut -d "\"" -f 4 )
+
+#4.1 Create additional EBS volume and mount it
+
+aws ec2 create-volume --availability-zone "$AWS_AZ" --size 1 >> $TMPDIR/ebs.txt
+
+VOLUME_ID=$(grep -P '"VolumeId":.*?[^\\]"' $TMPDIR/ebs.txt | cut -d "\"" -f 4 )
+
+for instance in $INSTANCE_IDS; do
+    aws ec2 attach-volume --volume $VOLUME_ID --instance $instance --device xvdz 
+done
+
 #5. if instances are ready - ssh to instances and set up chef there.
 
-#sudo DEBIAN_FRONTEND=noninteractive apt-get -y install chef
+# Todo via User Data or ssh
+# ssh ubuntu@$INSTANCE sudo DEBIAN_FRONTEND=noninteractive apt-get -y install chef
+
+# scp chef_setup_config.rb ubuntu@$INSTANCE:knife.rb 
+
+# Run wrapper data bag to install chef-server.
+# ssh -R 4000:localhost:7799 ubuntu@$INSTANCE sudo chef-client -c knife.rb -o chef-gcd::chef-ha
+
+# ssh -R 4000:localhost:7799 ubuntu@$INSTANCE sudo chef-client -c knife.rb -o chef-server-cluster::cluster-provision
 
 #remove tmpdir
 if [ $DEBUG -eq 0 ]; then
